@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-gesture-handler";
+
+import * as React from "react";
+import { Button, View } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+
+import Profile from "./screens/Profile";
+import Notifications from "./screens/Notifications";
+import AboutSchool from "./screens/AboutSchool";
+import Login from "./screens/Login";
+import TrackerApp from "./screens/TrackerApp";
+
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="About School">
+        <Drawer.Screen
+          name="Home"
+          component={Login}
+          options={{
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
+            swipeEnabled: false,
+          }}
+        />
+        <Drawer.Screen name="Profile" component={Profile} />
+        <Drawer.Screen name="Bus Tracker" component={TrackerApp} />
+        <Drawer.Screen name="Notifications" component={Notifications} />
+        <Drawer.Screen name="About School" component={AboutSchool} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
