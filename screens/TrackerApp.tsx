@@ -3,13 +3,17 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { Image, StyleSheet, Text, View } from "react-native";
 import * as Location from "expo-location";
 import { COORDINATES_ROUTE, COORDINATES_STOPS } from "../utils";
+import useUser from "../hook/useUser";
 
 export default function App() {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
   );
 
+  const { loading } = useUser();
+
   useEffect(() => {
+    if (loading) return;
     const getPermission = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -18,26 +22,24 @@ export default function App() {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
       setLocation(location);
     };
 
     const watchId = Location.watchPositionAsync(
       {
-        accuracy: Location.Accuracy.High,
+        accuracy: Location.Accuracy.BestForNavigation,
         timeInterval: 1000,
         distanceInterval: 1,
       },
       (newLocation) => {
-        console.log(newLocation);
         setLocation(newLocation);
       }
     );
 
     getPermission();
-  }, []);
+  }, [loading]);
 
-  if (location === null) {
+  if (location === null || loading) {
     return (
       <View>
         <Text>loading</Text>

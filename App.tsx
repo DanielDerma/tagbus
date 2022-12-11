@@ -25,11 +25,11 @@ export default function App() {
           <Drawer.Screen
             name="Login"
             component={Login}
-            options={{
-              drawerItemStyle: { display: "none" },
-              headerShown: false,
-              swipeEnabled: false,
-            }}
+            // options={{
+            //   drawerItemStyle: { display: "none" },
+            //   headerShown: false,
+            //   swipeEnabled: false,
+            // }}
           />
           <Drawer.Screen name="Profile" component={Profile} />
           <Drawer.Screen name="Bus Tracker" component={TrackerApp} />
