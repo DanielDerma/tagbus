@@ -1,4 +1,4 @@
-const TEC_ROUTE_COORDS: [number, number][] = [
+const TEC_ROUTE_COORDS = [
   [28.190781, -105.479245],
   [28.190428258856585, -105.47885417856236],
   [28.191091996260198, -105.4780934074484],
@@ -30,7 +30,9 @@ const TEC_ROUTE_COORDS: [number, number][] = [
   [28.209213903298263, -105.44848016657862],
   [28.209821479117743, -105.44691702921756],
   [28.215717016437527, -105.43280792617632],
-];
+] as TEC_ROUTE_COORDS_TYPES;
+
+type TEC_ROUTE_COORDS_TYPES = [number, number][];
 
 type TEC_STOPS_TYPES = {
   id: number;
@@ -59,6 +61,12 @@ const TEC_STOPS = [
     pinColor: "green",
   },
 ] as TEC_STOPS_TYPES[];
+
+// type of COORDINATES_ROUTE
+type COORDINATES_ROUTE_TYPES = {
+  latitude: number;
+  longitude: number;
+};
 
 export const COORDINATES_ROUTE = TEC_ROUTE_COORDS.map((e) => ({
   latitude: e[0],
