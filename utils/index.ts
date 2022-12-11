@@ -1,4 +1,4 @@
-const TEC_ROUTE_COORDS = [
+const TEC_ROUTE_COORDS: [number, number][] = [
   [28.190781, -105.479245],
   [28.190428258856585, -105.47885417856236],
   [28.191091996260198, -105.4780934074484],
@@ -32,6 +32,13 @@ const TEC_ROUTE_COORDS = [
   [28.215717016437527, -105.43280792617632],
 ];
 
+type TEC_STOPS_TYPES = {
+  id: number;
+  coordinates: [number, number];
+  title: string;
+  pinColor: string;
+};
+
 const TEC_STOPS = [
   {
     id: 1,
@@ -51,7 +58,7 @@ const TEC_STOPS = [
     title: "Tercer punto de Abordaje",
     pinColor: "green",
   },
-];
+] as TEC_STOPS_TYPES[];
 
 export const COORDINATES_ROUTE = TEC_ROUTE_COORDS.map((e) => ({
   latitude: e[0],

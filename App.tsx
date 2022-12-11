@@ -16,7 +16,7 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="About School">
+      <Drawer.Navigator initialRouteName="Bus Tracker">
         <Drawer.Screen
           name="Home"
           component={Login}

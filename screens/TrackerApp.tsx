@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import * as Location from "expo-location";
 import { COORDINATES_ROUTE, COORDINATES_STOPS } from "../utils";
 
@@ -13,21 +13,24 @@ export default function App() {
     const getPermission = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.error("Permission to access location was denied");
+        console.log("Permission to access location was denied");
         return;
       }
+
       let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
       setLocation(location);
     };
 
-    const watchLocation = Location.watchPositionAsync(
+    const watchId = Location.watchPositionAsync(
       {
-        accuracy: Location.Accuracy.BestForNavigation,
+        accuracy: Location.Accuracy.High,
         timeInterval: 1000,
         distanceInterval: 1,
       },
-      (location) => {
-        setLocation(location);
+      (newLocation) => {
+        console.log(newLocation);
+        setLocation(newLocation);
       }
     );
 
@@ -35,7 +38,11 @@ export default function App() {
   }, []);
 
   if (location === null) {
-    return null;
+    return (
+      <View>
+        <Text>loading</Text>
+      </View>
+    );
   }
 
   return (
@@ -60,13 +67,15 @@ export default function App() {
             coordinate={stop.coordinates}
             title={stop.title}
             pinColor={stop.pinColor}
-          >
-            <Image
-              source={require("../assets/bus.png")}
-              style={{ width: 50, height: 50 }}
-            />
-          </Marker>
+          />
         ))}
+        <Marker
+          coordinate={{
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }}
+          title={"You are here"}
+        />
       </MapView>
     </View>
   );
