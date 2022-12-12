@@ -6,9 +6,7 @@ import { COORDINATES_ROUTE, COORDINATES_STOPS } from "../utils";
 import useUser from "../hook/useUser";
 
 export default function App() {
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
   const { loading } = useUser();
 
@@ -56,13 +54,8 @@ export default function App() {
           longitude: location.coords.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}
-      >
-        <Polyline
-          coordinates={COORDINATES_ROUTE}
-          strokeColor={"#00b0fd"}
-          strokeWidth={4}
-        />
+        }}>
+        <Polyline coordinates={COORDINATES_ROUTE} strokeColor={"#00b0fd"} strokeWidth={4} />
         {COORDINATES_STOPS.map((stop, index) => (
           <Marker
             key={index}

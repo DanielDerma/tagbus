@@ -1,5 +1,5 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import Constants from "expo-constants";
@@ -8,14 +8,27 @@ import useUser from "../hook/useUser";
 
 export default function Login() {
   const { login } = useAuth();
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    login(email, password);
+  const { loading } = useUser(true);
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+      navigation.navigate("Profile" as never);
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setEmail("");
+      setPassword("");
+    }
   };
 
-  useUser();
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <View style={styles.container}>
@@ -27,7 +40,8 @@ export default function Login() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Username"
+        placeholder="Password"
+        secureTextEntry
         value={password}
         onChangeText={(text) => setPassword(text)}
       />

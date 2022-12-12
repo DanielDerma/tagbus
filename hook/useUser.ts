@@ -1,17 +1,21 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+
 import useAuth from "./useAuth";
 
-const useUser = () => {
+const useUser = (isLogin = false) => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  useEffect(() => {
-    if (!currentUser) {
+  console.log("currentUser", currentUser);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!currentUser) navigation.navigate("Login" as never);
+      if (currentUser && isLogin) navigation.navigate("Profile" as never);
+
       setLoading(false);
-      navigation.navigate("Login" as never);
-    }
-  }, []);
+    }, [currentUser])
+  );
 
   return { loading };
 };

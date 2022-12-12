@@ -2,15 +2,16 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import useAuth from "../hook/useAuth";
 import useUser from "../hook/useUser";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Profile() {
-  const { logout } = useAuth();
-
+  const { logout, currentUser } = useAuth();
+  const navigation = useNavigation();
   const { loading } = useUser();
 
-  const handleSignOut = () => {
-    console.log("entre handleSignOut");
-    logout();
+  const handleLogin = async () => {
+    await logout();
+    navigation.navigate("Profile" as never);
   };
 
   if (loading) {
@@ -20,7 +21,9 @@ export default function Profile() {
   return (
     <View>
       <Text>Profile</Text>
-      <Button onPress={handleSignOut} title="Sign Out" />
+      <Text>{currentUser?.email}</Text>
+      <Text>{currentUser?.displayName}</Text>
+      <Button onPress={handleLogin} title="Sign Out" />
     </View>
   );
 }

@@ -26,14 +26,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   function logout() {
-    console.log("entre logout");
     return signOut(auth);
   }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log("user:", user);
-
       setCurrentUser(user);
 
       if (!user?.email) {
@@ -65,9 +62,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
