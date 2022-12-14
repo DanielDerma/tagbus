@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
         return;
       }
-      getCurrentUser(user.email)
+      getCurrentUser(user.uid)
         .then((data) => {
           setInfoUser(data);
         })

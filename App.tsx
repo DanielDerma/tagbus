@@ -3,6 +3,7 @@ import "react-native-gesture-handler";
 import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 // ----------------- Screens -----------------
 import Profile from "./screens/Profile";
@@ -25,11 +26,11 @@ export default function App() {
           <Drawer.Screen
             name="Login"
             component={Login}
-            options={{
-              drawerItemStyle: { display: "none" },
-              headerShown: false,
-              swipeEnabled: false,
-            }}
+            // options={{
+            //   drawerItemStyle: { display: "none" },
+            //   headerShown: false,
+            //   swipeEnabled: false,
+            // }}
           />
           <Drawer.Screen name="Profile" component={Profile} />
           <Drawer.Screen name="Bus Tracker" component={TrackerApp} />
@@ -37,6 +38,7 @@ export default function App() {
           <Drawer.Screen name="About School" component={AboutSchool} />
         </Drawer.Navigator>
       </NavigationContainer>
+      <StatusBar style="auto" />
     </AuthProvider>
   );
 }
