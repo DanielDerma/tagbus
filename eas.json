@@ -9,6 +9,7 @@
     },
     "preview": {
       "env": {
+        "GOOGLE_MAPS_APIKEY": "AIzaSyA0iXBYWpAMEGmk7SDNJek5tzgkPMwve_I",
         "REACT_APP_FIREBASE_API_KEY": "AIzaSyA0iXBYWpAMEGmk7SDNJek5tzgkPMwve_I",
         "REACT_APP_FIREBASE_AUTH_DOMAIN": "tagbus-370201.firebaseapp.com",
         "REACT_APP_FIREBASE_PROJECT_ID": "tagbus-370201",

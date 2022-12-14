@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362119653998",
+    "project_id": "tagbus-370201",
+    "storage_bucket": "tagbus-370201.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362119653998:android:1452d61c289b184af5547f",
+        "android_client_info": {
+          "package_name": "com.danielderma.tagbus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362119653998-u3ertdjomuh2er9mf6rmukvngckr9hnh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBdon9RKM2TOUx-QplX_O_CY3fOphd8rY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362119653998-u3ertdjomuh2er9mf6rmukvngckr9hnh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
