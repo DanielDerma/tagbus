@@ -1,8 +1,12 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Linking, Platform } from "react-native";
+import { updateToken } from "../services/firebaseFunctions";
+import useAuth from "./useAuth";
 
 const useNotifications = () => {
+  const { currentUser } = useAuth();
+
   const registerForPushNotificationsAsync = async () => {
     if (Device.isDevice) {
       const { status: existingStatus } =
@@ -18,6 +22,7 @@ const useNotifications = () => {
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
       console.log("Push Token:", token);
+      await updateToken(currentUser?.uid, token);
     } else {
       alert("Must use physical device for Push Notifications");
     }

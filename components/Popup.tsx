@@ -1,5 +1,13 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
+import Animated, {
+  BounceInDown,
+  BounceOutDown,
+  FadeInDown,
+  SlideInDown,
+  SlideOutDown,
+} from "react-native-reanimated";
+
 import { MapDirectionsResponse } from "../types";
 
 type PopupProps = {
@@ -12,18 +20,24 @@ const Popup = (props: PopupProps) => {
   const { user, bus, stopTitle } = props;
   if (!user || !bus) return null;
   return (
-    <View style={styles.container}>
+    <Animated.View
+      entering={SlideInDown}
+      exiting={SlideOutDown}
+      style={styles.container}
+    >
       <Text>{stopTitle}</Text>
       {[bus, user].map((elem, i) => {
         const { distance, duration } = elem;
-        // make 2 digits after the comma
         const distanceKms = (Math.round(distance * 100) / 100).toFixed(2);
         const durationMins = Math.ceil(duration);
         return (
           <View key={i}>
             <View style={styles.infoRouteCard}>
               <View>
-                <Image style={styles.image} source={{ uri: "https://picsum.photos/200" }} />
+                <Image
+                  style={styles.image}
+                  source={{ uri: "https://picsum.photos/200" }}
+                />
               </View>
               <View>
                 <Text>{i === 0 ? "Camion" : "Usuario"}</Text>
@@ -35,7 +49,7 @@ const Popup = (props: PopupProps) => {
           </View>
         );
       })}
-    </View>
+    </Animated.View>
   );
 };
 

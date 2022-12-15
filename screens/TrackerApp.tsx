@@ -1,51 +1,36 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Animated } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import MapView, { Marker, MarkerPressEvent, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 import useUser from "../hook/useUser";
 import useAuth from "../hook/useAuth";
 import useLocation from "../hook/useLocation";
-import useAnimation from "../hook/useAnimation";
+import useStopInfo from "../hook/useStopInfo";
 
 import Popup from "../components/Popup";
 
-import { coordinatesStopsTypes, LatLng, MapDirectionsResponse } from "../types";
 import { busLocation } from "../mock";
+import TrackerAppPlaceHolder from "../components/TrackerAppPlaceHolder";
 
 export default function App() {
   const { loading } = useUser();
   const { infoUser } = useAuth();
   const { location, route } = useLocation(loading, infoUser);
-  const { translation } = useAnimation(location, loading, route);
+  const {
+    setRoutingDataUser,
+    setRoutingDataBus,
+    selected,
+    updateStop,
+    cancelStop,
+    routingDataUser,
+    routingDataBus,
+    stopTitle,
+  } = useStopInfo();
 
-  const [routingDataUser, setRoutingDataUser] = useState<MapDirectionsResponse>();
-  const [routingDataBus, setRoutingDataBus] = useState<MapDirectionsResponse>();
-  const [selected, setSelected] = useState<LatLng>();
-  const [stopTitle, setStopTitle] = useState<string>("");
-
-  const handlePressRouter = (e: MarkerPressEvent, stop: coordinatesStopsTypes) => {
-    setSelected(e.nativeEvent.coordinate);
-    setStopTitle(stop.title);
-  };
-
-  const isScreenReady = location && !loading && route;
-
-  if (!isScreenReady) {
-    return (
-      <View style={styles.container}>
-        <Animated.View
-          style={{
-            width: 100,
-            height: 100,
-            backgroundColor: "red",
-            transform: [{ translateX: translation }],
-          }}
-        />
-        {/* <Animated.View style={[styles.skeleton, styles.skeletonPopup]} /> */}
-      </View>
-    );
+  if (!(location && !loading && route)) {
+    return <TrackerAppPlaceHolder />;
   }
 
   return (
@@ -57,7 +42,8 @@ export default function App() {
           longitude: location.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}>
+        }}
+      >
         {/* bus route */}
         <Polyline
           coordinates={route?.coords}
@@ -73,17 +59,21 @@ export default function App() {
             key={index}
             coordinate={stop?.coordinates}
             pinColor={stop.pinColor}
-            onPress={(e) => handlePressRouter(e, stop)}
+            onPress={(e) => updateStop(e, stop)}
           />
         ))}
         {/* user location */}
         <Marker
           coordinate={location}
-          onPress={() => console.log("pressed")}
+          onPress={cancelStop}
           title={"You are here"}
         />
         {/* bus location */}
-        <Marker coordinate={busLocation.coords} pinColor={"#94345D"} title={"Bus"} />
+        <Marker
+          coordinate={busLocation.coords}
+          pinColor={"#94345D"}
+          title={"Bus"}
+        />
         {/* user location to stop */}
         <MapViewDirections
           origin={location}
@@ -107,7 +97,11 @@ export default function App() {
           apikey={process.env.GOOGLE_MAPS_APIKEY || ""}
         />
       </MapView>
-      <Popup user={routingDataUser} bus={routingDataBus} stopTitle={stopTitle} />
+      <Popup
+        user={routingDataUser}
+        bus={routingDataBus}
+        stopTitle={stopTitle}
+      />
     </View>
   );
 }
@@ -119,19 +113,5 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
-  },
-  skeleton: {
-    width: "95%",
-    alignSelf: "center",
-    backgroundColor: "green",
-  },
-  skeletonMap: {
-    backgroundColor: "green",
-    flex: 4,
-  },
-  skeletonPopup: {
-    marginTop: 10,
-    flex: 1,
-    backgroundColor: "red",
   },
 });

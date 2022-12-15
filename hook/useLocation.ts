@@ -5,7 +5,10 @@ import { getRoute } from "../services/firebaseFunctions";
 
 import { LatLng, routeType, UserInfoType } from "../types";
 
-const useLocation = (loading: boolean, infoUser: UserInfoType | null | undefined) => {
+const useLocation = (
+  loading: boolean,
+  infoUser: UserInfoType | null | undefined
+) => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [route, setRoute] = useState<routeType>();
 
@@ -42,6 +45,10 @@ const useLocation = (loading: boolean, infoUser: UserInfoType | null | undefined
 
     getPermission();
     handleRoutes();
+
+    return () => {
+      watchId.then((res) => res.remove);
+    };
   }, [loading]);
 
   if (!location) {

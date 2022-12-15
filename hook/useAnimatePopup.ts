@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { Animated } from "react-native";
 
-const useAnimation = (location: any, loading: any, route: any) => {
+const useAnimatePopup = (location: any, loading: any, route: any) => {
   const translation = useRef(new Animated.Value(0)).current;
 
   const animate = () => {
@@ -34,4 +34,4 @@ const useAnimation = (location: any, loading: any, route: any) => {
   return { translation };
 };
 
-export default useAnimation;
+export default useAnimatePopup;
