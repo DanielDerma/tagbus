@@ -14,10 +14,7 @@ export const getCurrentUser = async (uid: string) => {
   return userSnap.data() as UserInfoType;
 };
 
-export const updateToken = async (
-  token: string | undefined | null,
-  uid: string
-) => {
-  const tokenRef = doc(firestore, "tokens", uid);
+export const updateToken = async (token: string) => {
+  const tokenRef = doc(firestore, "tokens", "asdf");
   await setDoc(tokenRef, { token });
 };

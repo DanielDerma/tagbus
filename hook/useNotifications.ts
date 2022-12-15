@@ -22,10 +22,11 @@ const useNotifications = () => {
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
       console.log("Push Token:", token);
-      await updateToken(currentUser?.uid, token);
-    } else {
-      alert("Must use physical device for Push Notifications");
+      await updateToken(token);
     }
+    // else {
+    //   alert("Must use physical device for Push Notifications");
+    // }
 
     if (Platform.OS === "android") {
       Notifications.setNotificationChannelAsync("default", {

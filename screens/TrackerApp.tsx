@@ -5,7 +5,6 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 import useUser from "../hook/useUser";
-import useAuth from "../hook/useAuth";
 import useLocation from "../hook/useLocation";
 import useStopInfo from "../hook/useStopInfo";
 
@@ -16,8 +15,7 @@ import TrackerAppPlaceHolder from "../components/TrackerAppPlaceHolder";
 
 export default function App() {
   const { loading } = useUser();
-  const { infoUser } = useAuth();
-  const { location, route } = useLocation(loading, infoUser);
+  const { location, route } = useLocation(loading);
   const {
     setRoutingDataUser,
     setRoutingDataBus,

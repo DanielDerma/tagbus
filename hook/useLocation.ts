@@ -4,16 +4,15 @@ import * as Location from "expo-location";
 import { getRoute } from "../services/firebaseFunctions";
 
 import { LatLng, routeType, UserInfoType } from "../types";
+import useAuth from "./useAuth";
 
-const useLocation = (
-  loading: boolean,
-  infoUser: UserInfoType | null | undefined
-) => {
+const useLocation = (loading: boolean) => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [route, setRoute] = useState<routeType>();
+  const { infoUser } = useAuth();
 
   const handleRoutes = () => {
-    if (!infoUser) return;
+    if (!infoUser?.route) return;
     getRoute(infoUser?.route).then((res) => {
       setRoute(res);
     });
@@ -46,18 +45,16 @@ const useLocation = (
     getPermission();
     handleRoutes();
 
-    return () => {
-      watchId.then((res) => res.remove);
-    };
+    // return () => {
+    //   watchId.then((res) => res.remove);
+    // };
   }, [loading]);
 
-  if (!location) {
-    return { location: null, route };
-  }
+  if (!location) return { location: null, route };
 
   const myLocation = {
-    latitude: location?.coords.latitude,
-    longitude: location?.coords.longitude,
+    latitude: location?.coords?.latitude,
+    longitude: location?.coords?.longitude,
   } as LatLng;
 
   return { location: myLocation, route };
