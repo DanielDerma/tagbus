@@ -31,16 +31,16 @@ const useLocation = (loading: boolean) => {
       setLocation(location);
     };
 
-    const watchId = Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 1000,
-        distanceInterval: 1,
-      },
-      (newLocation) => {
-        setLocation(newLocation);
-      }
-    );
+    // const watchId = Location.watchPositionAsync(
+    //   {
+    //     accuracy: Location.Accuracy.Highest,
+    //     timeInterval: 1000,
+    //     distanceInterval: 1,
+    //   },
+    //   (newLocation) => {
+    //     setLocation(newLocation);
+    //   }
+    // );
 
     getPermission();
     handleRoutes();
