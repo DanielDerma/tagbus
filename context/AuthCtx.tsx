@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
 
-      if (!user?.email) {
+      if (!user?.uid) {
         setInfoUser(null);
         setLoading(false);
         return;
@@ -62,5 +62,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
   };
 
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }

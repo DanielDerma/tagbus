@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import useUser from "../hook/useUser";
+import useAuth from "../hook/useAuth";
 
 export default function Notifications() {
+  const { infoUser } = useAuth();
   const { loading } = useUser();
 
   if (loading) {
@@ -11,6 +13,7 @@ export default function Notifications() {
   return (
     <View>
       <Text>Notifications</Text>
+      <Text>{infoUser?.route}</Text>
     </View>
   );
 }
