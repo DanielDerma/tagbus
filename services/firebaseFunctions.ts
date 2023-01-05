@@ -1,4 +1,13 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+
 import { firestore } from "./client";
 import { routeType, UserInfoType } from "../types";
 
@@ -14,7 +23,7 @@ export const getCurrentUser = async (uid: string) => {
   return userSnap.data() as UserInfoType;
 };
 
-export const updateToken = async (token: string) => {
-  const tokenRef = doc(firestore, "tokens", "asdf");
+export const updateToken = async (uid: string, token: string) => {
+  const tokenRef = doc(firestore, "tokens", uid);
   await setDoc(tokenRef, { token });
 };

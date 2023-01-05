@@ -1,13 +1,70 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { Linking, Platform } from "react-native";
+import { Platform } from "react-native";
 import { updateToken } from "../services/firebaseFunctions";
-import useAuth from "./useAuth";
+import { useState, useEffect } from "react";
+import {
+  collection,
+  onSnapshot,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
+import { firestore } from "../services/client";
+import type { UserInfo } from "firebase/auth";
+import type { NotificationType, UserInfoType } from "../types";
 
-const useNotifications = () => {
-  const { currentUser } = useAuth();
+const useNotifications = (
+  currentUser: UserInfo | null | undefined,
+  infoUser: UserInfoType | null | undefined
+) => {
+  const [notifications, setNotifications] = useState<NotificationType[]>();
 
-  const registerForPushNotificationsAsync = async () => {
+  useEffect(() => {
+    if (!currentUser || !infoUser) return;
+
+    const q = query(
+      collection(firestore, "notifications"),
+      where("route", "==", infoUser.route)
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        const notification: NotificationType = {
+          id: doc.id,
+          title: data.title,
+          body: data.body,
+          route: data.route,
+          createdAt: data.createdAt.toDate(),
+        };
+        return notification;
+      });
+      setNotifications(data);
+    });
+
+    registerForPushNotificationsAsync(currentUser.uid);
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
+    });
+
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener(
+        handleNotificationResponse
+      );
+
+    return () => {
+      unsubscribe;
+      if (responseListener)
+        Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, [currentUser, infoUser]);
+
+  const registerForPushNotificationsAsync = async (uid: string) => {
     if (Device.isDevice) {
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
@@ -21,8 +78,7 @@ const useNotifications = () => {
         return;
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log("Push Token:", token);
-      await updateToken(token);
+      await updateToken(uid, token);
     }
     // else {
     //   alert("Must use physical device for Push Notifications");
@@ -43,15 +99,12 @@ const useNotifications = () => {
   const handleNotificationResponse = (
     response: Notifications.NotificationResponse
   ) => {
-    const data: { url?: string } = response.notification.request.content.data;
-
-    if (data.url) Linking.openURL(data.url);
+    const data = response.notification.request.content.data;
+    console.log(data);
   };
 
   return {
-    registerForPushNotificationsAsync,
-    handleNotificationResponse,
-    handleNotifications,
+    notifications,
   };
 };
 
